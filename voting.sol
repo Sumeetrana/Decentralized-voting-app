@@ -142,4 +142,20 @@ contract Vote {
         }
         return true;
     }
+
+    function getVoterList() public view returns (Voter[] memory) {
+        Voter[] memory voterList = new Voter[](nextVoterId - 1);
+        for (uint i = 0; i < voterList.length; i++) {
+            voterList[i] = voterDetails[i + 1];
+        }
+        return voterList;
+    }
+
+    function getCandidteList() public view returns (Candidate[] memory) {
+        Candidate[] memory candidateList = new Candidate[](nextCandidateId - 1);
+        for (uint i = 0; i < candidateList.length; i++) {
+            candidateList[i] = candidateDetails[i + 1];
+        }
+        return candidateList;
+    }
 }
