@@ -70,12 +70,27 @@ contract Vote {
         _;
     }
 
+    modifier isValidAge(uint _age) {
+        require(_age >= 18, "You are below 18");
+        _;
+    }
+
     function registerCandidate(
         string calldata _name,
         string calldata _party,
         uint _age,
         Gender _gender
-    ) external {
+    ) external isValidAge(_age) {
+        require(
+            isCandidateNotRegistered(msg.sender),
+            "You are already registered"
+        );
+        require(nextCandidateId < 3, "Candidate registration full");
+        require(
+            msg.sender != electionCommission,
+            "Election commission not allowed"
+        );
+
         candidateDetails[nextCandidateId] = Candidate({
             name: _name,
             party: _party,
@@ -92,7 +107,9 @@ contract Vote {
         string calldata _name,
         uint _age,
         Gender _gender
-    ) external {
+    ) external isValidAge(_age) {
+        require(isVoterNotRegistered(msg.sender), "You are already registered");
+
         voterDetails[nextVoterId] = Voter({
             name: _name,
             age: _age,
@@ -102,5 +119,27 @@ contract Vote {
             voteCandidateId: 0
         });
         nextVoterId++;
+    }
+
+    function isCandidateNotRegistered(
+        address _person
+    ) internal view returns (bool) {
+        for (uint i = 1; i < nextCandidateId; i++) {
+            if (candidateDetails[i].candidateAddress == _person) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function isVoterNotRegistered(
+        address _person
+    ) internal view returns (bool) {
+        for (uint i = 1; i < nextVoterId; i++) {
+            if (voterDetails[i].voterAddress == _person) {
+                return false;
+            }
+        }
+        return true;
     }
 }
