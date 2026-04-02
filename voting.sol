@@ -185,4 +185,17 @@ contract Vote {
             return VotingStatus.Ended;
         }
     }
+
+    function announceVotingResult() external onlyCommissioner() returns(address) {
+        if(candidateDetails[1].votes > candidateDetails[2].votes) {
+            winner = candidateDetails[1].candidateAddress;
+        } else {
+            winner = candidateDetails[2].candidateAddress;
+        }
+        return winner;
+    }
+
+    function emergencyStopVoting() public onlyCommissioner() {
+        stopVoting = true;
+    }
 }
