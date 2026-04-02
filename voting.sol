@@ -151,11 +151,20 @@ contract Vote {
         return voterList;
     }
 
-    function getCandidteList() public view returns (Candidate[] memory) {
+    function getCandidateList() public view returns (Candidate[] memory) {
         Candidate[] memory candidateList = new Candidate[](nextCandidateId - 1);
         for (uint i = 0; i < candidateList.length; i++) {
             candidateList[i] = candidateDetails[i + 1];
         }
         return candidateList;
+    }
+
+    function castVote(uint _voterId, uint _candidateId) external {
+        require(voterDetails[_voterId].voteCandidateId == 0, "You have already voted");
+        require(voterDetails[_voterId].voterAddress == msg.sender, "You are not authorized");
+        require(_candidateId >= 1 && _candidateId < 3, "Candidate Id is not correct");
+
+        voterDetails[_voterId].voteCandidateId = _candidateId;
+        candidateDetails[_candidateId].votes++;
     }
 }
