@@ -19,7 +19,7 @@ contract Vote {
         uint age;
         Gender gender;
         uint candidateId;
-        address candidateAdress;
+        address candidateAddress;
         uint votes;
     }
 
@@ -68,5 +68,23 @@ contract Vote {
     modifier onlyCommissioner() {
         require(msg.sender == electionCommission, "Not authorized");
         _;
+    }
+
+    function registerCandidate(
+        string calldata _name,
+        string calldata _party,
+        uint _age,
+        Gender _gender
+    ) external {
+        candidateDetails[nextCandidateId] = Candidate({
+            name: _name,
+            party: _party,
+            age: _age,
+            gender: _gender,
+            candidateId: nextCandidateId,
+            candidateAddress: msg.sender,
+            votes: 0
+        });
+        nextCandidateId++;
     }
 }
