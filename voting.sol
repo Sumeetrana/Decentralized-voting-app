@@ -87,4 +87,20 @@ contract Vote {
         });
         nextCandidateId++;
     }
+
+    function registerVoter(
+        string calldata _name,
+        uint _age,
+        Gender _gender
+    ) external {
+        voterDetails[nextVoterId] = Voter({
+            name: _name,
+            age: _age,
+            gender: _gender,
+            voterId: nextVoterId,
+            voterAddress: msg.sender,
+            voteCandidateId: 0
+        });
+        nextVoterId++;
+    }
 }
