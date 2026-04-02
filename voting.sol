@@ -38,4 +38,8 @@ contract Vote {
 
     mapping(uint => Voter) voterDetails; // mapping of voterId -> Voter struct
     mapping(uint => Candidate) candidateDetails; // mapping of candidateId -> Candidate struct
+
+    constructor() {
+        electionCommission = msg.sender;
+    }
 }
