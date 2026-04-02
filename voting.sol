@@ -39,6 +39,18 @@ contract Vote {
     mapping(uint => Voter) voterDetails; // mapping of voterId -> Voter struct
     mapping(uint => Candidate) candidateDetails; // mapping of candidateId -> Candidate struct
 
+    enum VotingStatus {
+        NotStarted,
+        InProgress,
+        Ended
+    }
+    enum Gender {
+        NotSpecified,
+        Male,
+        Female,
+        Other
+    }
+
     constructor() {
         // Election commission will be the person who will deploy this smart contract.
         // Constructor runs as soon as we will deploy this smart contract.
@@ -54,7 +66,7 @@ contract Vote {
     }
 
     modifier onlyCommissioner() {
-        require(msg.sender == electionCommision, "Not authorized");
+        require(msg.sender == electionCommission, "Not authorized");
         _;
     }
 }
