@@ -2,6 +2,7 @@
 pragma solidity ^0.8.18; // stating our version
 
 contract Vote {
+    // First entity
     struct Voter {
         string name;
         uint age;
@@ -11,6 +12,7 @@ contract Vote {
         address voterAddress;
     }
 
+    // second entity
     struct Candidate {
         string name;
         string party;
@@ -20,4 +22,7 @@ contract Vote {
         address candidateAdress;
         uint votes;
     }
+
+    // third entity
+    address electionCommission;
 }
