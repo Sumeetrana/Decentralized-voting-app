@@ -25,4 +25,17 @@ contract Vote {
 
     // third entity
     address electionCommission;
+
+    address public winner;
+
+    uint nextVoterId = 1;
+    uint nextCandidateId = 1;
+
+    // voting period
+    uint startTime;
+    uint endTime;
+    bool stopVoting;
+
+    mapping(uint => Voter) voterDetails; // mapping of voterId -> Voter struct
+    mapping(uint => Candidate) candidateDetails; // mapping of candidateId -> Candidate struct
 }
