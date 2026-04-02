@@ -40,6 +40,21 @@ contract Vote {
     mapping(uint => Candidate) candidateDetails; // mapping of candidateId -> Candidate struct
 
     constructor() {
+        // Election commission will be the person who will deploy this smart contract.
+        // Constructor runs as soon as we will deploy this smart contract.
         electionCommission = msg.sender;
+    }
+
+    modifier isVotingOver() {
+        require(
+            block.timestamp > endTime || stopVoting == true,
+            "Voting is not over!!"
+        );
+        _;
+    }
+
+    modifier onlyCommissioner() {
+        require(msg.sender == electionCommision, "Not authorized");
+        _;
     }
 }
