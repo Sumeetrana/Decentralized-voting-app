@@ -167,4 +167,22 @@ contract Vote {
         voterDetails[_voterId].voteCandidateId = _candidateId;
         candidateDetails[_candidateId].votes++;
     }
+
+     function setVotingPeriod(uint _startTime, uint _endTime) external onlyCommissioner() {
+        require(_startTime < _endTime, "Invalid time period");
+        require(_endTime > 3600, "Time range must be greater than 1 hour");
+
+        startTime = block.timestamp + _startTime;
+        endTime = startTime + _endTime;
+    }
+
+    function getVotingStatus() external view returns(VotingStatus) {
+        if (startTime == 0) {
+            return VotingStatus.NotStarted;
+        } else if (endTime > block.timestamp && stopVoting == false) {
+            return VotingStatus.InProgress;
+        } else {
+            return VotingStatus.Ended;
+        }
+    }
 }
