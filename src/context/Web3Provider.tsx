@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Web3Context, type Web3ContextType } from "./Web3Context";
 import { getWeb3State } from "../utils/getWeb3State";
+import { handleAccountChange } from "../utils/handleAccountChange";
+import { handleChainChange } from "../utils/handleChainChange";
 
 export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const [web3State, setWeb3State] = useState<Web3ContextType["web3State"]>({
@@ -21,6 +23,16 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
       console.log("Error: ", error);
     }
   };
+
+  useEffect(() => {
+    (window as any).ethereum.on("accountsChanges", () => {
+      handleAccountChange(setWeb3State);
+    });
+
+    (window as any).ethereum.on("chainChanged", () => {
+      handleChainChange(setWeb3State);
+    });
+  }, []);
 
   return (
     <>
