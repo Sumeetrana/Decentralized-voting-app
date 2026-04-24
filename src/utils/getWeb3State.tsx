@@ -7,13 +7,13 @@ export const getWeb3State = async () => {
       throw new Error("Metamask is not installed");
     }
 
-    const accounts = (window as any).ethereum.request({
+    const accounts = await (window as any).ethereum.request({
       method: "eth_requestAccounts",
     });
 
     const selectedAccount = accounts[0];
 
-    const chainIdHex = (window as any).ethereum.request({
+    const chainIdHex = await (window as any).ethereum.request({
       method: "eth_chainId",
     });
     const chainId = parseInt(chainIdHex, 16);

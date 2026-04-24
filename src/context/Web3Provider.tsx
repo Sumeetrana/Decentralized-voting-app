@@ -10,8 +10,16 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   });
 
   const handleWallet = async () => {
-    const { contractInstance, selectedAccount, chainId } = await getWeb3State();
-    setWeb3State({ contractInstance, selectedAccount, chainId });
+    try {
+      const { contractInstance, selectedAccount, chainId } =
+        await getWeb3State();
+
+      console.log(contractInstance, selectedAccount, chainId);
+
+      setWeb3State({ contractInstance, selectedAccount, chainId });
+    } catch (error) {
+      console.log("Error: ", error);
+    }
   };
 
   return (
